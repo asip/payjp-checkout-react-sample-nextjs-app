@@ -60,7 +60,7 @@ function PayjpCheckoutFunc({
       // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed]) // 依存配列を追加
+  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant]) // 依存配列を追加
 
   return (<div id="payjpCheckout"></div>);
 }
