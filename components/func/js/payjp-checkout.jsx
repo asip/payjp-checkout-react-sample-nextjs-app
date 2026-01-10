@@ -1,6 +1,7 @@
+import { useCallback } from "react";
 import { useEffect } from "react";
 
-function PayjpCheckoutFunc({
+const PayjpCheckout = ({
   className = 'payjp-button',
   dataKey,
   dataPartial,
@@ -13,16 +14,16 @@ function PayjpCheckoutFunc({
   dataTenant,
   onCreatedHandler = () => undefined,
   onFailedHandler = () => undefined
-}) {
-  const onCreated = (response) => {
+}) => {
+  const onCreated = useCallback((response) => {
     const payload = {token: response.id}
     onCreatedHandler(payload);
-  }
+  }, [onCreatedHandler])
 
-  const onFailed = (statusCode, errorResponse) => {
-    const payload = {message: errorResponse.message}
+  const onFailed = useCallback((statusCode, errorResponse) => {
+    const payload = {statusCode, message: errorResponse.message}
     onFailedHandler(payload);
-  }
+  }, [onFailedHandler])
 
   useEffect(() => {
     // const windowAlertBackUp = window.alert;
@@ -60,9 +61,9 @@ function PayjpCheckoutFunc({
       // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant]) // 依存配列を追加
+  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed]) // 依存配列を追加
 
   return (<div id="payjpCheckout"></div>);
 }
 
-export default PayjpCheckoutFunc;
+export default PayjpCheckout;

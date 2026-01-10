@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react'
 // import { useRouter } from 'next/navigation';
 import Link from 'next/link'
-import PayjpCheckoutFunc from "@/components/payjp_checkout_func_ts";
+import PayjpCheckout from "@/components/func/payjp-checkout";
 
 export default function Index() {
   const payjpCheckoutProps = {
@@ -33,7 +32,7 @@ export default function Index() {
       <div>function component</div>
       {/* <div><a href="" onClick={toTop}>class component</a></div> */}
       <div><Link href="/class" >class component</Link></div>
-      <PayjpCheckoutFunc {...payjpCheckoutProps} />
+      <PayjpCheckout {...payjpCheckoutProps} />
     </div>
   )
 }

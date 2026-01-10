@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react'
 // import { useRouter } from 'next/navigation';
 import Link from 'next/link'
-import PayjpCheckoutClass from '@/components/payjp_checkout_class_ts'
+import PayjpCheckout from '@/components/class/payjp-checkout'
 
 export default function Class() {
   const payjpCheckoutProps = {
@@ -34,7 +33,7 @@ export default function Class() {
       <div>class component</div>
       {/* <div><a href="" onClick={toFunc}>function component</a></div> */}
       <div><Link href="/">function component</Link></div>
-      <PayjpCheckoutClass {...payjpCheckoutProps} />
+      <PayjpCheckout {...payjpCheckoutProps} />
     </div>
   )
 }

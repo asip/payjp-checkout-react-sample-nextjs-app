@@ -1,11 +1,62 @@
 import React from 'react';
 
-class PayjpCheckoutClass extends React.Component {
-  constructor(props) {
+interface CheckoutResponse {
+  // card: any
+  // created: number
+  id: string
+  // livemode: boolean
+  // object: string
+  // used: boolean
+}
+
+interface CheckoutErrorResponse {
+  // code: string
+  message: string
+  // status: number // http (response) status code
+  // type: string
+}
+
+interface PayjpCheckoutPayload {
+  token: string
+}
+
+interface PayjpCheckoutErrorPayload {
+  statusCode: number
+  message: string
+}
+
+interface PayjpWindow extends Window {
+  payjpCheckoutOnCreated: ((response: CheckoutResponse) => void) | null
+  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: CheckoutErrorResponse) => void) | null
+  PayjpCheckout: any | null
+}
+
+declare const window: PayjpWindow
+
+interface PayjpCheckoutProps {
+  className?: string
+  dataKey?: string
+  dataPartial?: string
+  dataText?: string
+  dataSubmitText?: string
+  dataTokenName?:  string
+  dataPreviousToken?: string
+  dataLang?: string
+  dataNamePlaceholder?: string
+  dataTenant?: string,
+  onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
+  onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
+}
+
+class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
+
+  payjpCheckoutElement: HTMLElement | null = null;
+  script: HTMLScriptElement | null = null;
+
+  // windowAlertBackUp!: () => void
+
+  constructor(props: PayjpCheckoutProps) {
     super(props);
-    this.payjpCheckoutElement = null;
-    this.script = null;
-    // this.windowAlertBackUp = null;
     this.onCreated = this.onCreated.bind(this);
     this.onFailed = this.onFailed.bind(this);
   }
@@ -21,12 +72,14 @@ class PayjpCheckoutClass extends React.Component {
     // this.windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = this.onCreated;
     window.payjpCheckoutOnFailed = this.onFailed;
-    // window.alert = () => {}; // PAY.JP の checkout から呼ばれる window.alert を一時的に無効化
+    /* // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
+    window.alert = () => {
+    }; */
 
     this.script = document.createElement('script');
     this.script.src = 'https://checkout.pay.jp/';
-    this.script.classList.add(this.props.className);
-    this.script.dataset.key = this.props.dataKey;
+    this.props.className && this.script.classList.add(this.props.className);
+    this.script.dataset.key = this.props.dataKey || '';
     this.script.dataset.partial = this.props.dataPartial || 'false';
     if (this.props.dataText) this.script.dataset.text = this.props.dataText;
     if (this.props.dataSubmitText) this.script.dataset.submitText = this.props.dataSubmitText;
@@ -44,24 +97,24 @@ class PayjpCheckoutClass extends React.Component {
 
   componentWillUnmount() {
     // すでに https://checkout.pay.jp/ の checkout.js が実行済みで、script タグを削除しているだけ
-    this.payjpCheckoutElement?.removeChild(this.script);
+    this.payjpCheckoutElement?.removeChild(this.script as Node);
     window.payjpCheckoutOnCreated = null;
     window.payjpCheckoutOnFailed = null;
     // window.alert = this.windowAlertBackUp;
     window.PayjpCheckout = null;
   }
 
-  shouldComponentUpdate(_nextProps, _nextState, _nextContext) {
+  shouldComponentUpdate(_nextProps: any, _nextState: any, _nextContext: any) {
     return false; // PAY.JP スクリプトが DOM を直接操作するため、React の再レンダリングを抑制
   }
 
-  onCreated(response) {
-    const payload = {token: response.id}
+  onCreated(response: CheckoutResponse) {
+    const payload: PayjpCheckoutPayload = {token: response.id}
     this.props.onCreatedHandler(payload);
   }
 
-  onFailed(statusCode, errorResponse) {
-    const payload = {statusCode, message: errorResponse.message}
+  onFailed(statusCode: number, errorResponse: CheckoutErrorResponse) {
+    const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
     this.props.onFailedHandler(payload);
   }
 
@@ -70,4 +123,4 @@ class PayjpCheckoutClass extends React.Component {
   }
 }
 
-export default PayjpCheckoutClass;
+export default PayjpCheckout;
