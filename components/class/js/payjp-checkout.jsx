@@ -8,6 +8,7 @@ class PayjpCheckout extends React.Component {
     // this.windowAlertBackUp = null;
     this.onCreated = this.onCreated.bind(this);
     this.onFailed = this.onFailed.bind(this);
+    this.payjpCheckoutId = crypto.randomUUID();
   }
 
   static defaultProps = {
@@ -21,7 +22,11 @@ class PayjpCheckout extends React.Component {
     // this.windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = this.onCreated;
     window.payjpCheckoutOnFailed = this.onFailed;
-    // window.alert = () => {}; // PAY.JP の checkout から呼ばれる window.alert を一時的に無効化
+    /*
+    PAY.JP の checkout から呼ばれる window.alert を無効化
+    // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
+    window.alert = () => {}
+    */
 
     this.script = document.createElement('script');
     this.script.src = 'https://checkout.pay.jp/';
@@ -38,7 +43,7 @@ class PayjpCheckout extends React.Component {
     if (this.props.dataNamePlaceholder) this.script.dataset.namePlaceholder = this.props.dataNamePlaceholder;
     if (this.props.dataTenant) this.script.dataset.tenant = this.props.dataTenant;
 
-    this.payjpCheckoutElement = document.getElementById('payjpCheckout');
+    this.payjpCheckoutElement = document.getElementById(this.payjpCheckoutId);
     this.payjpCheckoutElement?.appendChild(this.script);
   }
 
@@ -66,7 +71,7 @@ class PayjpCheckout extends React.Component {
   }
 
   render() {
-    return <div id="payjpCheckout"></div>;
+    return <div id={this.payjpCheckoutId}></div>;
   }
 }
 

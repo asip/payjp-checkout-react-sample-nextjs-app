@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useId } from "react";
 
 const PayjpCheckout = ({
   className = 'payjp-button',
@@ -15,6 +14,8 @@ const PayjpCheckout = ({
   onCreatedHandler = () => undefined,
   onFailedHandler = () => undefined
 }) => {
+  const payjpCheckoutId = useId();
+
   const onCreated = useCallback((response) => {
     const payload = {token: response.id}
     onCreatedHandler(payload);
@@ -29,9 +30,11 @@ const PayjpCheckout = ({
     // const windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = onCreated;
     window.payjpCheckoutOnFailed = onFailed;
-    /* // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
-    window.alert = () => {
-    }; */
+    /*
+    PAY.JP の checkout から呼ばれる window.alert を無効化
+    // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
+    window.alert = () => {}
+    */
 
     //console.log(props);
 
@@ -50,7 +53,7 @@ const PayjpCheckout = ({
     if (dataNamePlaceholder) script.dataset.namePlaceholder = dataNamePlaceholder;
     if (dataTenant) script.dataset.tenant = dataTenant;
 
-    const payjpCheckoutElement = document.getElementById('payjpCheckout');
+    const payjpCheckoutElement = document.getElementById(payjpCheckoutId);
     payjpCheckoutElement?.appendChild(script);
 
     return () => {
@@ -61,9 +64,9 @@ const PayjpCheckout = ({
       // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed]) // 依存配列を追加
+  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed, payjpCheckoutId]) // 依存配列を追加
 
-  return (<div id="payjpCheckout"></div>);
+  return (<div id={payjpCheckoutId}></div>);
 }
 
 export default PayjpCheckout;

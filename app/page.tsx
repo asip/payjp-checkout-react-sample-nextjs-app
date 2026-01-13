@@ -2,7 +2,8 @@
 
 // import { useRouter } from 'next/navigation';
 import Link from 'next/link'
-import PayjpCheckout from "@/components/func/payjp-checkout";
+import PayjpCheckout from "@/components/func/payjp-checkout"
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/components/func/payjp-checkout"
 
 export default function Index() {
   const payjpCheckoutProps = {
@@ -13,17 +14,19 @@ export default function Index() {
     onFailedHandler: onFailed,
   }
 
-  /* const router = useRouter();
-  function toTop(){
+  /*
+  const router = useRouter()
+  function toTop() {
     router.push('/')
-  } */
+  }
+  */
 
-  function onCreated(payload: any) {
+  function onCreated(payload: PayjpCheckoutPayload) {
     //console.log(payload)
     console.log(payload.token)
   }
 
-  function onFailed(payload: any) {
+  function onFailed(payload: PayjpCheckoutErrorPayload) {
     console.log(payload.message)
   }
 

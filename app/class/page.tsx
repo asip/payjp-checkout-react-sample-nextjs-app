@@ -3,6 +3,7 @@
 // import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 import PayjpCheckout from '@/components/class/payjp-checkout'
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '@/components/class/payjp-checkout'
 
 export default function Class() {
   const payjpCheckoutProps = {
@@ -19,12 +20,12 @@ export default function Class() {
     router.push('/func')
   } */
 
-  function onCreated(payload: any) {
+  function onCreated(payload: PayjpCheckoutPayload) {
     //console.log(payload)
     console.log(payload.token)
   }
 
-  function onFailed(payload: any) {
+  function onFailed(payload: PayjpCheckoutErrorPayload) {
     console.log(payload.message)
   }
 
