@@ -14,11 +14,13 @@ export default function Class() {
     onFailedHandler: onFailed,
   }
 
-  /* const router = useRouter();
+  /*
+  const router = useRouter();
 
   function toFunc(){
-    router.push('/func')
-  } */
+    router.push('/')
+  }
+  */
 
   function onCreated(payload: PayjpCheckoutPayload) {
     //console.log(payload)
@@ -32,9 +34,9 @@ export default function Class() {
   return (
     <div className="payjpButtonArea">
       <div>class component</div>
-      {/* <div><a href="" onClick={toFunc}>function component</a></div> */}
-      <div><Link href="/">function component</Link></div>
       <PayjpCheckout {...payjpCheckoutProps} />
+      {/* <div><a href="" onClick={toFunc()}>function component</a></div> */}
+      <div><Link href="/">function component</Link></div>
     </div>
   )
 }

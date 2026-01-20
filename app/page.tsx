@@ -16,8 +16,9 @@ export default function Index() {
 
   /*
   const router = useRouter()
-  function toTop() {
-    router.push('/')
+
+  function toClass() {
+    router.push('/class')
   }
   */
 
@@ -33,9 +34,9 @@ export default function Index() {
   return (
     <div className="payjpButtonArea">
       <div>function component</div>
-      {/* <div><a href="" onClick={toTop}>class component</a></div> */}
-      <div><Link href="/class" >class component</Link></div>
       <PayjpCheckout {...payjpCheckoutProps} />
+      {/* <div><a href="" onClick={toClass}>class component</a></div> */}
+      <div><Link href="/class" >class component</Link></div>
     </div>
   )
 }
