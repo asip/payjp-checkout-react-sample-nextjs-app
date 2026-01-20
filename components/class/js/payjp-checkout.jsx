@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 class PayjpCheckout extends React.Component {
   constructor(props) {

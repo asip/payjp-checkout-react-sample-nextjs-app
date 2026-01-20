@@ -1,7 +1,7 @@
 'use client';
 
 // import { useRouter } from 'next/navigation';
-import Link from 'next/link'
+// import Link from 'next/link'
 import PayjpCheckout from "@/components/func/payjp-checkout"
 import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/components/func/payjp-checkout"
 
@@ -36,7 +36,7 @@ export default function Index() {
       <div>function component</div>
       <PayjpCheckout {...payjpCheckoutProps} />
       {/* <div><a href="" onClick={toClass}>class component</a></div> */}
-      <div><Link href="/class" >class component</Link></div>
+      {/* <div><Link href="/class" >class component</Link></div> */}
     </div>
   )
 }
