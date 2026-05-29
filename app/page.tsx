@@ -3,7 +3,7 @@
 // import { useRouter } from 'next/navigation';
 // import Link from 'next/link'
 import PayjpCheckout from "@/components/func/payjp-checkout"
-import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/components/func/payjp-checkout"
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/types"
 
 export default function Index() {
   const payjpCheckoutProps = {
