@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '@/types'
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '@/types'
 
 interface PayjpCheckoutResponse {
   // card: any
@@ -18,6 +18,18 @@ interface PayjpCheckoutErrorResponse {
   // type: string
 }
 
+interface DataProperties {
+  key: string
+  partial?: string
+  text?: string
+  submitText?: string
+  tokenName?: string
+  previousToken?: string
+  lang?: string
+  namePlaceholder?: string
+  tenant?: string,
+}
+
 declare global {
   interface Window {
     payjpCheckoutOnCreated: ((response: PayjpCheckoutResponse) => void) | null
@@ -28,15 +40,7 @@ declare global {
 
 interface PayjpCheckoutProps {
   className?: string
-  dataKey?: string
-  dataPartial?: string
-  dataText?: string
-  dataSubmitText?: string
-  dataTokenName?: string
-  dataPreviousToken?: string
-  dataLang?: string
-  dataNamePlaceholder?: string
-  dataTenant?: string,
+  data: DataProperties
   onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
   onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
@@ -76,17 +80,17 @@ class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
     this.script = document.createElement('script')
     this.script.src = 'https://checkout.pay.jp/'
     this.props.className && this.script.classList.add(this.props.className)
-    this.script.dataset.key = this.props.dataKey || ''
-    this.script.dataset.partial = this.props.dataPartial || 'false'
-    if (this.props.dataText) this.script.dataset.text = this.props.dataText
-    if (this.props.dataSubmitText) this.script.dataset.submitText = this.props.dataSubmitText
-    if (this.props.dataTokenName) this.script.dataset.tokenName = this.props.dataTokenName
-    if (this.props.dataPreviousToken) this.script.dataset.previousToken = this.props.dataPreviousToken
-    if (this.props.dataLang) this.script.dataset.lang = this.props.dataLang
     this.script.dataset.onCreated = 'payjpCheckoutOnCreated'
     this.script.dataset.onFailed = 'payjpCheckoutOnFailed'
-    if (this.props.dataNamePlaceholder) this.script.dataset.namePlaceholder = this.props.dataNamePlaceholder
-    if (this.props.dataTenant) this.script.dataset.tenant = this.props.dataTenant
+    this.script.dataset.key = this.props.data.key
+    this.script.dataset.partial = this.props.data.partial || 'false'
+    if (this.props.data.text) this.script.dataset.text = this.props.data.text
+    if (this.props.data.submitText) this.script.dataset.submitText = this.props.data.submitText
+    if (this.props.data.tokenName) this.script.dataset.tokenName = this.props.data.tokenName
+    if (this.props.data.previousToken) this.script.dataset.previousToken = this.props.data.previousToken
+    if (this.props.data.lang) this.script.dataset.lang = this.props.data.lang
+    if (this.props.data.namePlaceholder) this.script.dataset.namePlaceholder = this.props.data.namePlaceholder
+    if (this.props.data.tenant) this.script.dataset.tenant = this.props.data.tenant
 
     this.payjpCheckoutElement = document.getElementById(this.payjpCheckoutId)
     this.payjpCheckoutElement?.appendChild(this.script)

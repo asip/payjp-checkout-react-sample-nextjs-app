@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId } from "react"
 
-import { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '@/types'
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '@/types'
 
 interface PayjpCheckoutResponse {
   // card: any
@@ -18,6 +18,18 @@ interface PayjpCheckoutErrorResponse {
   // type: string
 }
 
+interface DataProperties {
+  key: string
+  partial?: string
+  text?: string
+  submitText?: string
+  tokenName?: string
+  previousToken?: string
+  lang?: string
+  namePlaceholder?: string
+  tenant?: string,
+}
+
 declare global {
   interface Window {
     payjpCheckoutOnCreated: ((response: PayjpCheckoutResponse) => void) | null
@@ -29,30 +41,14 @@ declare global {
 
 interface PayjpCheckoutProps {
   className?: string
-  dataKey?: string
-  dataPartial?: string
-  dataText?: string
-  dataSubmitText?: string
-  dataTokenName?: string
-  dataPreviousToken?: string
-  dataLang?: string
-  dataNamePlaceholder?: string
-  dataTenant?: string,
+  data: DataProperties,
   onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
   onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
 const PayjpCheckout = ({
   className = 'payjp-button',
-  dataKey,
-  dataPartial,
-  dataText,
-  dataSubmitText,
-  dataTokenName,
-  dataPreviousToken,
-  dataLang,
-  dataNamePlaceholder,
-  dataTenant,
+  data,
   onCreatedHandler = () => undefined,
   onFailedHandler = () => undefined
 }: PayjpCheckoutProps) => {
@@ -83,17 +79,17 @@ const PayjpCheckout = ({
     const script = document.createElement('script')
     script.src = 'https://checkout.pay.jp/'
     script.classList.add(className)
-    script.dataset.key = dataKey || ''
-    script.dataset.partial = dataPartial || 'false'
-    if (dataText) script.dataset.text = dataText
-    if (dataSubmitText) script.dataset.submitText = dataSubmitText
-    if (dataTokenName) script.dataset.tokenName = dataTokenName
-    if (dataPreviousToken) script.dataset.previousToken = dataPreviousToken
-    if (dataLang) script.dataset.lang = dataLang
     script.dataset.onCreated = 'payjpCheckoutOnCreated'
     script.dataset.onFailed = 'payjpCheckoutOnFailed'
-    if (dataNamePlaceholder) script.dataset.namePlaceholder = dataNamePlaceholder
-    if (dataTenant) script.dataset.tenant = dataTenant
+    script.dataset.key = data.key
+    script.dataset.partial = data.partial ?? 'false'
+    if (data.text) script.dataset.text = data.text
+    if (data.submitText) script.dataset.submitText = data.submitText
+    if (data.tokenName) script.dataset.tokenName = data.tokenName
+    if (data.previousToken) script.dataset.previousToken = data.previousToken
+    if (data.lang) script.dataset.lang = data.lang
+    if (data.namePlaceholder) script.dataset.namePlaceholder = data.namePlaceholder
+    if (data.tenant) script.dataset.tenant = data.tenant
 
     const payjpCheckoutElement = document.getElementById(payjpCheckoutId)
     payjpCheckoutElement?.appendChild(script)
@@ -106,7 +102,7 @@ const PayjpCheckout = ({
       // window.alert = windowAlertBackUp
       window.PayjpCheckout = null
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed, payjpCheckoutId]) // 依存配列を追加
+  }, [className, data, onCreated, onFailed, payjpCheckoutId]) // 依存配列を追加
 
   return (<div id={payjpCheckoutId}></div>)
 }

@@ -7,9 +7,7 @@ import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/types"
 
 export default function Index() {
   const payjpCheckoutProps = {
-    dataKey: process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY,
-    dataText: 'クレジットカードで支払う',
-    dataPartial: 'true',
+    data: { key: process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? '', text: 'クレジットカードで支払う', partial: 'true' },
     onCreatedHandler: onCreated,
     onFailedHandler: onFailed,
   }

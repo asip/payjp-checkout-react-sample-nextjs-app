@@ -13,7 +13,7 @@ class PayjpCheckout extends React.Component {
 
   static defaultProps = {
     className: 'payjp-button',
-    dataKey: '',
+    data: { key: '' },
     onCreatedHandler: () => {},
     onFailedHandler: () => {},
   };
@@ -31,15 +31,15 @@ class PayjpCheckout extends React.Component {
     this.script = document.createElement('script');
     this.script.src = 'https://checkout.pay.jp/';
     this.script.classList.add(this.props.className);
-    this.script.dataset.key = this.props.dataKey;
-    this.script.dataset.partial = this.props.dataPartial || 'false';
-    if (this.props.dataText) this.script.dataset.text = this.props.dataText;
-    if (this.props.dataSubmitText) this.script.dataset.submitText = this.props.dataSubmitText;
-    if (this.props.dataTokenName) this.script.dataset.tokenName = this.props.dataTokenName;
-    if (this.props.dataPreviousToken) this.script.dataset.previousToken = this.props.dataPreviousToken;
-    if (this.props.dataLang) this.script.dataset.lang = this.props.dataLang;
     this.script.dataset.onCreated = 'payjpCheckoutOnCreated';
     this.script.dataset.onFailed = 'payjpCheckoutOnFailed';
+    this.script.dataset.key = this.props.data.key;
+    this.script.dataset.partial = this.props.data.partial ?? 'false';
+    if (this.props.data.text) this.script.dataset.text = this.props.data.text;
+    if (this.props.data.submitText) this.script.dataset.submitText = this.props.data.submitText;
+    if (this.props.data.tokenName) this.script.dataset.tokenName = this.props.data.tokenName;
+    if (this.props.data.previousToken) this.script.dataset.previousToken = this.props.data.previousToken;
+    if (this.props.data.lang) this.script.dataset.lang = this.props.data.lang;
     if (this.props.dataNamePlaceholder) this.script.dataset.namePlaceholder = this.props.dataNamePlaceholder;
     if (this.props.dataTenant) this.script.dataset.tenant = this.props.dataTenant;
 
