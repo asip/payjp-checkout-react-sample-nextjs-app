@@ -42,27 +42,27 @@ declare global {
 interface PayjpCheckoutProps {
   className?: string
   data: DataProperties,
-  onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
-  onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
+  onSuccess: ((payload: PayjpCheckoutPayload) => void)
+  onError: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
 const PayjpCheckout = ({
   className = 'payjp-button',
   data,
-  onCreatedHandler = () => undefined,
-  onFailedHandler = () => undefined
+  onSuccess = () => undefined,
+  onError = () => undefined
 }: PayjpCheckoutProps) => {
   const payjpCheckoutId = useId()
 
   const onCreated = useCallback((response: PayjpCheckoutResponse) => {
     const payload: PayjpCheckoutPayload = {token: response.id}
-    onCreatedHandler(payload)
-  }, [onCreatedHandler])
+    onSuccess(payload)
+  }, [onSuccess])
 
   const onFailed = useCallback((statusCode: number, errorResponse: PayjpCheckoutErrorResponse) => {
     const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
-    onFailedHandler(payload)
-  }, [onFailedHandler])
+    onError(payload)
+  }, [onError])
 
   useEffect(() => {
     // const windowAlertBackUp = window.alert

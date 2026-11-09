@@ -14,8 +14,8 @@ class PayjpCheckout extends React.Component {
   static defaultProps = {
     className: 'payjp-button',
     data: { key: '' },
-    onCreatedHandler: () => {},
-    onFailedHandler: () => {},
+    onSuccess: () => {},
+    onError: () => {},
   };
 
   componentDidMount() {
@@ -62,12 +62,12 @@ class PayjpCheckout extends React.Component {
 
   onCreated(response) {
     const payload = {token: response.id}
-    this.props.onCreatedHandler(payload);
+    this.props.onSuccess(payload);
   }
 
   onFailed(statusCode, errorResponse) {
     const payload = {statusCode, message: errorResponse.message}
-    this.props.onFailedHandler(payload);
+    this.props.onError(payload);
   }
 
   render() {

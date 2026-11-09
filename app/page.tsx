@@ -8,8 +8,8 @@ import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from "@/types"
 export default function Index() {
   const payjpCheckoutProps = {
     data: { key: process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? '', text: 'クレジットカードで支払う', partial: 'true' },
-    onCreatedHandler: onCreated,
-    onFailedHandler: onFailed,
+    onSuccess,
+    onError,
   }
 
   /*
@@ -20,12 +20,12 @@ export default function Index() {
   }
   */
 
-  function onCreated(payload: PayjpCheckoutPayload) {
+  function onSuccess(payload: PayjpCheckoutPayload) {
     //console.log(payload)
     console.log(payload.token)
   }
 
-  function onFailed(payload: PayjpCheckoutErrorPayload) {
+  function onError(payload: PayjpCheckoutErrorPayload) {
     console.log(payload.message)
   }
 

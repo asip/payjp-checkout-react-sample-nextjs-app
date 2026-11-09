@@ -3,20 +3,20 @@ import { useCallback, useEffect, useId } from "react";
 const PayjpCheckout = ({
   className = 'payjp-button',
   data,
-  onCreatedHandler = () => undefined,
-  onFailedHandler = () => undefined
+  onSuccess = () => undefined,
+  onError = () => undefined
 }) => {
   const payjpCheckoutId = useId();
 
   const onCreated = useCallback((response) => {
     const payload = {token: response.id}
-    onCreatedHandler(payload);
-  }, [onCreatedHandler])
+    onSuccess(payload);
+  }, [onSuccess])
 
   const onFailed = useCallback((statusCode, errorResponse) => {
     const payload = {statusCode, message: errorResponse.message}
-    onFailedHandler(payload);
-  }, [onFailedHandler])
+    onError(payload);
+  }, [onError])
 
   useEffect(() => {
     // const windowAlertBackUp = window.alert;

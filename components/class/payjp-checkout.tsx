@@ -41,8 +41,8 @@ declare global {
 interface PayjpCheckoutProps {
   className?: string
   data: DataProperties
-  onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
-  onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
+  onSuccess: ((payload: PayjpCheckoutPayload) => void)
+  onError: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
 class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
@@ -62,9 +62,9 @@ class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
 
   static defaultProps = {
     className: 'payjp-button',
-    dataKey: '',
-    onCreatedHandler: () => {},
-    onFailedHandler: () => {},
+    data: { key: '' },
+    onSuccess: () => {},
+    onError: () => {},
   }
 
   componentDidMount() {
@@ -111,12 +111,12 @@ class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
 
   onCreated(response: PayjpCheckoutResponse) {
     const payload: PayjpCheckoutPayload = {token: response.id}
-    this.props.onCreatedHandler(payload)
+    this.props.onSuccess(payload)
   }
 
   onFailed(statusCode: number, errorResponse: PayjpCheckoutErrorResponse) {
     const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
-    this.props.onFailedHandler(payload)
+    this.props.onError(payload)
   }
 
   render() {
